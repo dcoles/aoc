@@ -1,6 +1,8 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
 use std::fs;
+use std::io::stdout;
+use std::io::Write;
 
 const WIDTH: usize = 300;
 const OFFSET: usize = 300;
@@ -13,9 +15,9 @@ fn main() {
     map.print();
     for _ in 0..N_ITERATIONS {
         map.tick();
-        map.print();
     }
 
+    /*
     let mut count_at_rest = 0;
     let mut count_hypothetical = 0;
     for y in map.ymin..=map.ymax {
@@ -30,7 +32,7 @@ fn main() {
     }
     println!("Water can reach {} tiles", count_at_rest + count_hypothetical);
     println!("There are {} water tiles at rest", count_at_rest);
-
+    */
 }
 
 fn read_input(filename: &str) -> Map {
@@ -115,7 +117,6 @@ impl Map {
             }
             println!();
         }
-        std::thread::sleep(std::time::Duration::from_millis(200));
     }
 
     fn tick(&mut self) {
@@ -153,6 +154,15 @@ impl Map {
 
     fn set(&mut self, pos: Pos, tile: char) {
         self.cells[pos.1][pos.0 - OFFSET] = tile;
+        if pos.1 <= 110 {
+            if tile == '|' {
+                print!("\x1b[{};{}H\x1b[36m{}\x1b[0m", pos.1+2, pos.0+7-OFFSET, tile);
+                std::thread::sleep(std::time::Duration::from_millis(42));
+            } else if tile == '~' {
+                print!("\x1b[{};{}H\x1b[34m{}\x1b[0m", pos.1+2, pos.0+7-OFFSET, tile);
+            }
+            stdout().flush();
+        }
     }
 
     fn get(&self, pos: Pos) -> char {
