@@ -5,14 +5,16 @@ use std::fs;
 const WIDTH: usize = 300;
 const OFFSET: usize = 300;
 const SPRING: (usize, usize) = (500, 0);
-const N_ITERATIONS: usize = 1000;
+const N_ITERATIONS: usize = 120;
 
 fn main() {
     let mut map = read_input("input.txt");
+    println!("\x1b[2J");
+    map.print();
     for _ in 0..N_ITERATIONS {
         map.tick();
+        map.print();
     }
-    map.print();
 
     let mut count_at_rest = 0;
     let mut count_hypothetical = 0;
@@ -97,7 +99,11 @@ type Pos = (usize, usize);
 
 impl Map {
     fn print(&self) {
+        println!("\x1b[H");
         for (y, row) in self.cells.iter().enumerate() {
+            if y > 110 {
+                break;
+            }
             print!("{:4}: ", y);
             for &cell in &row[..] {
                 match cell {
@@ -109,7 +115,7 @@ impl Map {
             }
             println!();
         }
-        println!();
+        std::thread::sleep(std::time::Duration::from_millis(200));
     }
 
     fn tick(&mut self) {
