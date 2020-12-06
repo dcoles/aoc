@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello, WASM!</title>
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:300&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet">
+  <script type="module">
+      import init from './pkg/wasm.js';
+      import { greet_async, draw_circle } from "./pkg/wasm.js";
+
+      init().then(() => {
+          greet_async('David');
+          draw_circle();
+      })
+  </script>
+</head>
+<body>
+<header>
+  <h1><a href="https://adventofcode.com/2020">Advent of Code [2020]</a></h1>
+</header>
+<main>
+  <article>
+    <h2>WebAssembly</h2>
+    <p>Proof of concept</p>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <textarea id="console" style="resize: none" rows="10" cols="80" readonly></textarea>
+  </article>
+</main>
+</body>
+</html>
